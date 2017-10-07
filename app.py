@@ -54,7 +54,8 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
         conv1 = conv_layer(x_image, 1, 32, "conv1")
         conv_out = conv_layer(conv1, 32, 64, "conv2")
     else:
-        pass
+        conv1 = conv_layer(x_image, 1, 64, "conv")
+        conv_out = tf.nn.max_pool(conv1, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding="SAME")
 
     flattened = tf.reshape(conv_out, [-1, 7 * 7 * 64])
 
@@ -64,7 +65,9 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
         embedding_size = 1024
         logits = fc_layer(fc1, 1024, 10, "fc2")
     else:
-        pass
+        embedding_input = flattened
+        embedding_size = 7 * 7 * 64
+        logits = fc_layer(flattened, 7 * 7 * 64, 10, "fc")
 
     with tf.name_scope("xent"):
         xent = tf.reduce_mean(
@@ -113,8 +116,8 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
 
 def main():
     learning_rate = 1E-4
-    use_two_fc = True
-    use_two_conv = True
+    use_two_fc = False
+    use_two_conv = False
 
     hparam = make_hparam_string(learning_rate, use_two_fc, use_two_conv)
     print('Starting run for %s' % hparam)
