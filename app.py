@@ -12,6 +12,7 @@ urllib.request.urlretrieve(GIST_URL + 'labels_1024.tsv', LOGDIR + 'labels_1024.t
 urllib.request.urlretrieve(GIST_URL + 'sprite_1024.png', LOGDIR + 'sprite_1024.png')
 
 
+
 def conv_layer(input, size_in, size_out, name="conv"):
   with tf.name_scope(name):
     w = tf.Variable(tf.truncated_normal([5, 5, size_in, size_out], stddev=0.1), name="W")
@@ -102,12 +103,21 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
     embedding_config.sprite.single_image_dim.extend([28, 28])
     tf.contrib.tensorboard.plugins.projector.visualize_embeddings(writer, config)
 
+    run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
+    run_metadata = tf.RunMetadata()
 
-    for i in range(2001):
+    for i in range(501):
         batch = mnist.train.next_batch(100)
         if i % 5 == 0:
-            [train_accuracy, s] = sess.run([accuracy, summ], feed_dict={x: batch[0], y: batch[1]})
+            [train_accuracy, s] = sess.run([accuracy, summ],
+                                           feed_dict={
+                                               x: batch[0],
+                                               y: batch[1]},
+                                           options=run_options,
+                                           run_metadata=run_metadata)
             writer.add_summary(s, i)
+            writer.add_run_metadata(run_metadata, 'step%d' % i)
+            print('step%04d, train_accuracy = %02.1f %%' % (i, train_accuracy*100))
         if i % 500 == 0:
             sess.run(assignment, feed_dict={x: mnist.test.images[:1024], y: mnist.test.labels[:1024]})
             saver.save(sess, os.path.join(LOGDIR, "model.ckpt"), i)
