@@ -6,6 +6,7 @@ _proc_status = '/proc/%d/status' % os.getpid()
 
 _scale = {'kB': 1024.0, 'mB': 1024.0*1024.0,
           'KB': 1024.0, 'MB': 1024.0*1024.0}
+firsttime_checkplatform = True
 
 def _VmB(VmKey):
     '''Private.
@@ -52,6 +53,12 @@ def memory_in_linux():
 
 def memory():
     from sys import platform
+    global firsttime_checkplatform
+
+    if firsttime_checkplatform:
+        print(platform)
+        firsttime_checkplatform = False
+
     if platform == "linux" or platform == "linux2":
         return memory_in_linux()
     elif platform == "darwin":
