@@ -3,14 +3,19 @@ import urllib.request
 import os
 import tensorflow as tf
 
+import memory
 
+memory.printMemory()
 LOGDIR = '/tmp/mnist_tutorial/'
+memory.printMemory()
 GIST_URL = 'https://gist.githubusercontent.com/dandelionmane/4f02ab8f1451e276fea1f165a20336f1/raw/dfb8ee95b010480d56a73f324aca480b3820c180/'
-
+memory.printMemory()
 mnist = tf.contrib.learn.datasets.mnist.read_data_sets(train_dir=LOGDIR + 'data', one_hot=True)
+memory.printMemory()
 urllib.request.urlretrieve(GIST_URL + 'labels_1024.tsv', LOGDIR + 'labels_1024.tsv')
+memory.printMemory()
 urllib.request.urlretrieve(GIST_URL + 'sprite_1024.png', LOGDIR + 'sprite_1024.png')
-
+memory.printMemory()
 
 
 def conv_layer(input, size_in, size_out, name="conv"):
@@ -44,12 +49,15 @@ def make_hparam_string(learning_rate, use_two_fc, use_two_conv):
 
 def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
     tf.reset_default_graph()
+    memory.printMemory()
     sess = tf.Session()
+    memory.printMemory()
 
     x = tf.placeholder(tf.float32, shape=[None, 784], name="x")
     x_image = tf.reshape(x, [-1, 28, 28, 1])
     tf.summary.image('input', x_image, 3)
     y = tf.placeholder(tf.float32, shape=[None, 10], name="labels")
+    memory.printMemory()
 
     if use_two_conv:
         conv1 = conv_layer(x_image, 1, 32, "conv1")
@@ -105,8 +113,10 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
 
     run_options = tf.RunOptions(trace_level=tf.RunOptions.FULL_TRACE)
     run_metadata = tf.RunMetadata()
+    memory.printMemory()
 
     for i in range(501):
+        memory.printMemory()
         batch = mnist.train.next_batch(100)
         if i % 5 == 0:
             [train_accuracy, s] = sess.run([accuracy, summ],
@@ -125,12 +135,15 @@ def mnist_model(learning_rate, use_two_fc, use_two_conv, hparam):
 
 
 def main():
+    memory.printMemory()
     learning_rate = 1E-4
     use_two_fc = False
     use_two_conv = False
+    memory.printMemory()
 
     hparam = make_hparam_string(learning_rate, use_two_fc, use_two_conv)
     print('Starting run for %s' % hparam)
+    memory.printMemory()
 
     mnist_model(learning_rate, use_two_fc, use_two_conv, hparam)
 
