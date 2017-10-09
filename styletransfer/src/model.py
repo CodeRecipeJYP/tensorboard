@@ -13,17 +13,17 @@ class StyleModel():
         self.img_placeholder = tf.placeholder(tf.float32, shape=config.CONTENT_SHAPE,
                                      name='img_placeholder')
         self.preds = feedfoward_net(self.img_placeholder)
+        self.saver = tf.train.Saver()
 
-    def load_ckpt(self):
-        saver = tf.train.Saver()
-        if os.path.isdir(config.CKPT_DIR):
-            ckpt = tf.train.get_checkpoint_state(config.CKPT_DIR)
+    def load_ckpt(self, ckpt_dir):
+        if os.path.isdir(ckpt_dir):
+            ckpt = tf.train.get_checkpoint_state(ckpt_dir)
             if ckpt and ckpt.model_checkpoint_path:
-                saver.restore(self.sess, ckpt.model_checkpoint_path)
+                self.saver.restore(self.sess, ckpt.model_checkpoint_path)
             else:
                 raise Exception("No checkpoint found...")
         else:
-            saver.restore(self.sess, config.CKPT_DIR)
+            self.saver.restore(self.sess, ckpt_dir)
 
     def feedfoward(self, img):
         _preds = self.sess.run(self.preds, feed_dict={self.img_placeholder: [img]})
