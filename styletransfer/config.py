@@ -17,6 +17,8 @@ CKPT_DIR = "data/ckpts"
 
 OUTPUT_DIR = "data/outputs"
 
+CONTENT_SHAPE = (1, 474, 712, 3)
+
 def OUTPUT_PATH():
     import time
     timestr = time.strftime("%Y%m%d%H%M%S")

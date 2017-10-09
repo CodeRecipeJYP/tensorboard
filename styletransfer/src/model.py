@@ -1,7 +1,33 @@
 import os
 import tensorflow as tf
 
+from styletransfer import config
 from styletransfer.src.layer import _conv_layer, _residual_block, _conv_tranpose_layer
+
+
+class StyleModel():
+    def init_network(self):
+        tf.reset_default_graph()
+        self.sess = tf.Session()
+
+        self.img_placeholder = tf.placeholder(tf.float32, shape=config.CONTENT_SHAPE,
+                                     name='img_placeholder')
+        self.preds = feedfoward_net(self.img_placeholder)
+
+    def load_ckpt(self):
+        saver = tf.train.Saver()
+        if os.path.isdir(config.CKPT_DIR):
+            ckpt = tf.train.get_checkpoint_state(config.CKPT_DIR)
+            if ckpt and ckpt.model_checkpoint_path:
+                saver.restore(self.sess, ckpt.model_checkpoint_path)
+            else:
+                raise Exception("No checkpoint found...")
+        else:
+            saver.restore(self.sess, config.CKPT_DIR)
+
+    def feedfoward(self, img):
+        _preds = self.sess.run(self.preds, feed_dict={self.img_placeholder: [img]})
+        return _preds
 
 
 def feedfoward_net(img):
@@ -17,6 +43,12 @@ def feedfoward_net(img):
     conv_t2 = _conv_tranpose_layer(conv_t1, 32, 3, 2)
     conv_t3 = _conv_layer(conv_t2, 3, 9, 1, relu=False)
     preds = tf.nn.tanh(conv_t3) * 150 + 255. / 2
+    return preds
+
+
+def stylemodel(img_placeholder):
+    preds = feedfoward_net(img_placeholder)
+
     return preds
 
 
