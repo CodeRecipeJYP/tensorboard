@@ -7,9 +7,9 @@ import time
 def mkdir_unless_exist(local_path):
     dirs = local_path.split(os.sep)
     path = ''
-
     for dir in dirs:
         if dir == '':
+            # todo CHECK LINUX CASE
             # it means ABSOLUTE PATH
             path = '/'
             continue
@@ -18,6 +18,7 @@ def mkdir_unless_exist(local_path):
         try:
             os.stat(next_path)
         except:
+            # todo CHECK NESTED FOLDER
             print('Make dir : \t\t\t\t\t' + next_path)
             os.mkdir(next_path)
         path = next_path
