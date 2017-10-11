@@ -74,7 +74,9 @@ def get_everydirnames(ftp, path):
     return everydirnames
 
 
-def downloadtraineddatafromftp(traindir="data/trained_data"):
+def downloadtraineddatafromftp(traindir=None):
+    if traindir is None:
+        traindir = "data/trained_data"
     from download import ftp_account
     ftp_domain = ftp_account.DOMAIN
     ftp_user = ftp_account.ACCOUNT
@@ -131,5 +133,5 @@ def downloadtraineddatafromftp(traindir="data/trained_data"):
     ftp.quit()
     return everydirnames
 
-downloaded = downloadtraineddatafromftp()
-print("Downloaded : %s" % downloaded)
+# downloaded = downloadtraineddatafromftp()
+# print("Downloaded : %s" % downloaded)
