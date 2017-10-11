@@ -7,10 +7,12 @@ import time
 def mkdir_unless_exist(local_path):
     dirs = local_path.split(os.sep)
     path = ''
+    print('mkdir_unless_exist/Dirs = %s' % dirs)
     for dir in dirs:
         if dir == '':
             # todo CHECK LINUX CASE
             # it means ABSOLUTE PATH
+            print('Absolute local_path')
             path = '/'
             continue
 
