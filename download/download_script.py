@@ -10,6 +10,8 @@ def mkdir_unless_exist(local_path):
 
     for dir in dirs:
         if dir == '':
+            # it means ABSOLUTE PATH
+            path = '/'
             continue
 
         next_path = path + dir + os.sep
