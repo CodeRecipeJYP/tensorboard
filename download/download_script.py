@@ -74,14 +74,14 @@ def get_everydirnames(ftp, path):
     return everydirnames
 
 
-def downloadtraineddatafromftp():
+def downloadtraineddatafromftp(traindir="data/trained_data"):
     from download import ftp_account
     ftp_domain = ftp_account.DOMAIN
     ftp_user = ftp_account.ACCOUNT
     ftp_pwd = ftp_account.PASSWORD
     ftp_homepath = ftp_account.HOMEPATH
     ftp_targetpath = "trained_data"
-    ftp_downloadlocaldir = convert_path_sep("data/trained_data")
+    ftp_downloadlocaldir = convert_path_sep(traindir)
 
     # mkdir in local
     local_dir = ftp_downloadlocaldir

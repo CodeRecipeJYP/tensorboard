@@ -20,7 +20,7 @@ def feedfoward_with_clazz(styleModel, content_img, stylename):
 
 
 def main():
-    downloaded = downloadtraineddatafromftp()
+    downloaded = downloadtraineddatafromftp(config.CKPT_BASE)
     tasks = downloaded
 
     printMemory()
