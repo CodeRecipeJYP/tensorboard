@@ -2,7 +2,7 @@ import time
 
 import os
 
-from download.download_script import downloadtraineddatafromftp, downloadcontentfromurl
+from download.download_script import downloadtraineddatafromftp, downloadcontentfromurl, mkdir_unless_exist
 from memory import printMemory
 from styletransfer import config
 from styletransfer.src.model import styletransfer_model, StyleModel
@@ -34,6 +34,7 @@ def main():
     filename = "chicago.jpg"
     downloadcontentfromurl(url, config.CONTENT_BASE, filename)
     tasks = downloaded
+    mkdir_unless_exist(config.OUTPUT_DIR)
 
     printMemory()
     content_img = get_img(config._CONTENT_PATH)
