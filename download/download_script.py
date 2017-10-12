@@ -76,6 +76,11 @@ def get_everydirnames(ftp, path):
     return everydirnames
 
 def downloadcontentfromurl(url, contentdir, filename):
+    contentdir = convert_path_sep(contentdir)
+
+    # mkdir in local
+    mkdir_unless_exist(contentdir)
+
     filepath = os.path.join(contentdir, filename)
     urllib.request.urlretrieve(url, filepath)
 
