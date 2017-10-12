@@ -1,3 +1,4 @@
+import urllib.request
 from ftplib import FTP
 from ftplib import error_perm
 import os
@@ -74,6 +75,9 @@ def get_everydirnames(ftp, path):
 
     return everydirnames
 
+def downloadcontentfromurl(url, contentdir, filename):
+    filepath = os.path.join(contentdir, filename)
+    urllib.request.urlretrieve(url, filepath)
 
 def downloadtraineddatafromftp(traindir=None):
     if traindir is None:

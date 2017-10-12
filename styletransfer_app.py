@@ -2,7 +2,7 @@ import time
 
 import os
 
-from download.download_script import downloadtraineddatafromftp
+from download.download_script import downloadtraineddatafromftp, downloadcontentfromurl
 from memory import printMemory
 from styletransfer import config
 from styletransfer.src.model import styletransfer_model, StyleModel
@@ -19,12 +19,25 @@ def feedfoward_with_clazz(styleModel, content_img, stylename):
     save_img(config.OUTPUT_PATH(stylename), output_img[0])
 
 
+def crop_img(content_img):
+    SIZE = [474, 712]
+    original_siz = content_img.shape
+    crop_st = int((original_siz[0]/2) - (SIZE[0]/2)), int((original_siz[1]/2) - (SIZE[1]/2))
+    return content_img[crop_st[0]:crop_st[0]+SIZE[0],crop_st[1]:crop_st[1]+SIZE[1]]
+
+
 def main():
     downloaded = downloadtraineddatafromftp(config.CKPT_BASE)
+    url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/chicago.jpg?alt=media&token=ada17c2f-a910-4cc5-a925-aed14333b334"
+    url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/photo.jpg?alt=media&token=ecea1013-3947-4e2d-ad9e-bafa93159806"
+    # url = "https://trello-attachments.s3.amazonaws.com/58d8e46f3932af08817b04fd/59dd8196c14ca71a19dfca96/569ce45e10adfc260c0c86dc572db000/chicago.jpg"
+    filename = "chicago.jpg"
+    downloadcontentfromurl(url, config.CONTENT_BASE, filename)
     tasks = downloaded
 
     printMemory()
     content_img = get_img(config._CONTENT_PATH)
+    content_img = crop_img(content_img)
     printMemory()
     iteration = len(tasks)
     start = time.time()

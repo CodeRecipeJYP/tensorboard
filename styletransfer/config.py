@@ -8,15 +8,14 @@ LOGDIR = '/tmp/styletransfer/'
 # _STYLE_NAME = os.path.splitext(STYLE_FILENAME)[0]
 # _STYLE_PATH = os.path.join(STYLE_DIR, STYLE_FILENAME)
 
-# TODO content도 다운로드 받게끔
-CONTENT_DIR = "data/content"
+# CONTENT_BASE = "/media/ubuntu/a5d0dd63-d6a7-4d32-b068-0978b9fa66fb/data/content_data"
+CONTENT_BASE = "data/content"
 CONTENT_FILENAME = "chicago.jpg"
 _CONTENT_NAME = os.path.splitext(CONTENT_FILENAME)[0]
-_CONTENT_PATH = os.path.join(CONTENT_DIR, CONTENT_FILENAME)
+_CONTENT_PATH = os.path.join(CONTENT_BASE, CONTENT_FILENAME)
 
-# TODO ckpt_base변수를 download시에도 활용하도록
-CKPT_BASE = "/media/ubuntu/a5d0dd63-d6a7-4d32-b068-0978b9fa66fb/data/trained_data"
-# CKPT_BASE = "/data/ckpts"
+# CKPT_BASE = "/media/ubuntu/a5d0dd63-d6a7-4d32-b068-0978b9fa66fb/data/trained_data"
+CKPT_BASE = "data/ckpts"
 
 OUTPUT_DIR = "data/outputs"
 
