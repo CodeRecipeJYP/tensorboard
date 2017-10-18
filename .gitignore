@@ -1,5 +1,6 @@
 data
 download/ftp_account.py
+firebase/fb_account.py
 
 .DS_Store
 # Created by .ignore support plugin (hsz.mobi)

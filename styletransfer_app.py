@@ -27,42 +27,45 @@ def crop_img(content_img):
 
 
 def main():
-    downloaded = downloadtraineddatafromftp(config.CKPT_BASE)
-    url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/chicago.jpg?alt=media&token=ada17c2f-a910-4cc5-a925-aed14333b334"
-    url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/photo.jpg?alt=media&token=ecea1013-3947-4e2d-ad9e-bafa93159806"
-    # url = "https://trello-attachments.s3.amazonaws.com/58d8e46f3932af08817b04fd/59dd8196c14ca71a19dfca96/569ce45e10adfc260c0c86dc572db000/chicago.jpg"
-    filename = "chicago.jpg"
-    downloadcontentfromurl(url, config.CONTENT_BASE, filename)
-    tasks = downloaded
-    mkdir_unless_exist(config.OUTPUT_DIR)
+    from firebase.db import firebasedb
+    firebasedb()
 
-    printMemory()
-    content_img = get_img(config._CONTENT_PATH)
-    content_img = crop_img(content_img)
-    printMemory()
-    iteration = len(tasks)
-    start = time.time()
-    printMemory()
-
-    styleModel = StyleModel()
-    printMemory()
-    styleModel.init_network()
-    printMemory()
-
-    for i, stylename in enumerate(tasks):
-        ckpt_dir = os.path.join(config.CKPT_BASE, stylename)
-        styleModel.load_ckpt(ckpt_dir)
-        printMemory()
-        feedfoward_with_clazz(styleModel, content_img, stylename)
-        printMemory()
-        # feedfoward_with_func(content_img)
-        cur = time.time()
-        elapsed = cur - start
-        print("Iteration %s, Elapsed time %s" % (i, elapsed))
-
-    final = time.time()
-    elapsed = final - start
-    print("Iteration %s, Average Elapsed time %s" % (iteration, elapsed/iteration))
+    # downloaded = downloadtraineddatafromftp(config.CKPT_BASE)
+    # url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/chicago.jpg?alt=media&token=ada17c2f-a910-4cc5-a925-aed14333b334"
+    # url = "https://firebasestorage.googleapis.com/v0/b/styletransfer-ba06f.appspot.com/o/photo.jpg?alt=media&token=ecea1013-3947-4e2d-ad9e-bafa93159806"
+    # # url = "https://trello-attachments.s3.amazonaws.com/58d8e46f3932af08817b04fd/59dd8196c14ca71a19dfca96/569ce45e10adfc260c0c86dc572db000/chicago.jpg"
+    # filename = "chicago.jpg"
+    # downloadcontentfromurl(url, config.CONTENT_BASE, filename)
+    # tasks = downloaded
+    # mkdir_unless_exist(config.OUTPUT_DIR)
+    #
+    # printMemory()
+    # content_img = get_img(config._CONTENT_PATH)
+    # content_img = crop_img(content_img)
+    # printMemory()
+    # iteration = len(tasks)
+    # start = time.time()
+    # printMemory()
+    #
+    # styleModel = StyleModel()
+    # printMemory()
+    # styleModel.init_network()
+    # printMemory()
+    #
+    # for i, stylename in enumerate(tasks):
+    #     ckpt_dir = os.path.join(config.CKPT_BASE, stylename)
+    #     styleModel.load_ckpt(ckpt_dir)
+    #     printMemory()
+    #     feedfoward_with_clazz(styleModel, content_img, stylename)
+    #     printMemory()
+    #     # feedfoward_with_func(content_img)
+    #     cur = time.time()
+    #     elapsed = cur - start
+    #     print("Iteration %s, Elapsed time %s" % (i, elapsed))
+    #
+    # final = time.time()
+    # elapsed = final - start
+    # print("Iteration %s, Average Elapsed time %s" % (iteration, elapsed/iteration))
 
 
 if __name__ == '__main__':
